@@ -32,7 +32,7 @@ public class Weapon : MonoBehaviour {
         timer += Time.deltaTime;
         if(timer > 1/frequency && shooting)
         {
-            ShootRay();
+            ShootBullet();
             timer = 0;
         }
 	}
@@ -40,7 +40,13 @@ public class Weapon : MonoBehaviour {
     void ShootBullet()
     {
         Rigidbody gameobject = (Rigidbody)Instantiate(bullet, transform.position, transform.rotation);
-        gameobject.velocity = transform.forward * bulletSpeed;
+        Vector3 direction = transform.forward;
+        if(target != null)
+        {
+            direction = (target.transform.position - transform.position).normalized;
+        }
+        gameobject.velocity = direction * bulletSpeed;
+        StartCoroutine(destroyObject(gameobject.gameObject));
     }
 
     void ShootRay()
@@ -48,6 +54,12 @@ public class Weapon : MonoBehaviour {
         if (target == null)
             Debug.DrawRay(transform.position, transform.forward * 100, Color.red, (1 / frequency) / 2.0f);
         else
-            Debug.DrawRay(transform.position, target.position - transform.position, Color.red, (1 / frequency) / 2.0f);
+            Debug.DrawRay(transform.position, (target.position - transform.position).normalized * 1000, Color.red, (1 / frequency) / 2.0f);
+    }
+
+    IEnumerator destroyObject(GameObject gameObject)
+    {
+        yield return new WaitForSeconds(1.5f);
+        Destroy(gameObject);
     }
 }
