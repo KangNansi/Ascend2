@@ -8,6 +8,7 @@ public class ShipController : MonoBehaviour {
     public Transform target;
     public RectTransform targetUI;
     public float sensibility;
+    public float travelingSpeed = 2.0f;
 
     // Use this for initialization
     void Start () {
@@ -24,13 +25,14 @@ public class ShipController : MonoBehaviour {
 
 
         MoveShip(new Vector3(h, v, 0) * ship.speed);
+        ship.transform.rotation = Quaternion.AngleAxis(h * -45, ship.transform.forward) * Quaternion.AngleAxis(v * -25, ship.transform.right);
         MoveTarget(new Vector3(hr, -vr, 0) * Time.deltaTime * sensibility);
 
         ship.weapon.target = target;
 
         ship.Shooting = Input.GetAxis("Fire1")>0.1f;
-        
 
+        transform.position += transform.forward * Time.deltaTime * travelingSpeed;
 	}
 
     void MoveShip(Vector3 motion)
