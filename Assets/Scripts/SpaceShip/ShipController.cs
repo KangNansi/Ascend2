@@ -12,6 +12,7 @@ public class ShipController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
 	}
 	
 	// Update is called once per frame
@@ -24,11 +25,15 @@ public class ShipController : MonoBehaviour {
 
 
         MoveShip(new Vector3(h, v, 0) * ship.speed);
-        ship.transform.rotation = Quaternion.AngleAxis(h * -45, ship.transform.forward) * Quaternion.AngleAxis(v * -25, ship.transform.right);
         MoveTarget(new Vector3(h, v, 0) * sensibility);
 
+        //ship.transform.rotation = Quaternion.LookRotation((target.position - ship.transform.position).normalized, Vector3.up);
+        ship.transform.rotation = Quaternion.AngleAxis(h * -45, ship.transform.forward) * Quaternion.AngleAxis(v * -25, ship.transform.right);
         ship.weapon.target = target;
-        ship.weapon.baseSpeed = transform.forward * travelingSpeed;
+        //ship.weapon.baseSpeed = transform.forward * travelingSpeed;
+        //ship.weaponB.baseSpeed = transform.forward * travelingSpeed;
+        ship.weapon.Direction = (target.position - transform.position).normalized;
+        ship.weaponB.Direction = ship.weapon.Direction;
 
         ship.Shooting = Input.GetAxis("Fire1")>0.1f;
 

@@ -6,6 +6,7 @@ public class SpaceShip : MonoBehaviour {
 
     public float speed = 10;
     public Weapon weapon;
+    public Weapon weaponB;
 
     public Rigidbody rigid;
 
@@ -18,12 +19,15 @@ public class SpaceShip : MonoBehaviour {
         set
         {
             weapon.Shoot = value;
+            weaponB.Shoot = value;
         }
     }
 
     private void Start()
     {
         rigid = GetComponent<Rigidbody>();
+        weapon.directionnal = true;
+        weaponB.directionnal = true;
     }
 
 }

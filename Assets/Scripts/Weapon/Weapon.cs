@@ -4,9 +4,23 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour {
     public Rigidbody bullet;
+    public GameObject burstParticle = null;
     public float frequency = 10;
     public float bulletSpeed = 1000;
     public Vector3 baseSpeed = new Vector3();
+    public bool directionnal = false;
+    Vector3 shootDirection = new Vector3();
+    public Vector3 Direction
+    {
+        get
+        {
+            return shootDirection;
+        }
+        set
+        {
+            shootDirection = value;
+        }
+    }
 
     bool shooting = false;
     float timer = 0.0f;
@@ -33,6 +47,10 @@ public class Weapon : MonoBehaviour {
         timer += Time.deltaTime;
         if(timer > 1/frequency && shooting)
         {
+            if(burstParticle != null)
+            {
+                AutoDestroy.SpawnObject(burstParticle, transform.position, Quaternion.identity, 1f);
+            }
             ShootBullet();
             timer = 0;
         }
@@ -44,7 +62,11 @@ public class Weapon : MonoBehaviour {
         //Rigidbody rigid = (Rigidbody)Instantiate(bullet, transform.position, Quaternion.identity);
         //gameobject.transform.SetParent(transform);
         Vector3 direction = transform.forward;
-        if(target != null)
+        if(directionnal)
+        {
+            direction = shootDirection;
+        }
+        else if(target != null)
         {
             direction = (target.position - transform.position).normalized;
             Debug.DrawRay(transform.position, direction*1000, Color.blue, 0.2f);
