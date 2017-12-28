@@ -12,7 +12,6 @@ public class ShipController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
 	}
 	
 	// Update is called once per frame
@@ -26,9 +25,10 @@ public class ShipController : MonoBehaviour {
 
         MoveShip(new Vector3(h, v, 0) * ship.speed);
         ship.transform.rotation = Quaternion.AngleAxis(h * -45, ship.transform.forward) * Quaternion.AngleAxis(v * -25, ship.transform.right);
-        MoveTarget(new Vector3(hr, -vr, 0) * Time.deltaTime * sensibility);
+        MoveTarget(new Vector3(h, v, 0) * sensibility);
 
         ship.weapon.target = target;
+        ship.weapon.baseSpeed = transform.forward * travelingSpeed;
 
         ship.Shooting = Input.GetAxis("Fire1")>0.1f;
 
@@ -43,7 +43,15 @@ public class ShipController : MonoBehaviour {
 
     void MoveTarget(Vector3 motion)
     {
-        ClampedMove(target, motion);
+        Vector3 viewportShip = Camera.main.WorldToViewportPoint(ship.transform.position+ship.transform.forward*10);
+        //motion.z = 1;
+        //motion = (motion + Vector3.one) / 2f;
+        motion += viewportShip;
+        //motion.z = 10;
+        Ray ray = Camera.main.ViewportPointToRay(motion);
+        target.transform.position = ray.origin + ray.direction * 100;
+        //target.position = Camera.main.ViewportToWorldPoint(motion);
+        ClampedPosition(target);
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(target.transform.position);
         targetUI.position = screenPoint;
     }
@@ -62,17 +70,17 @@ public class ShipController : MonoBehaviour {
         t.transform.position = Camera.main.ViewportToWorldPoint(viewPosition);
     }
 
-    void ClampedPosition(Transform t)
+    void ClampedPosition(Transform t, float min = 0.01f, float max = 0.99f)
     {
         Vector3 viewPosition = Camera.main.WorldToViewportPoint(t.transform.position);
-        if (viewPosition.x < 0.1f)
-            viewPosition.x = 0.1f;
-        if (viewPosition.x > 0.9f)
-            viewPosition.x = 0.9f;
-        if (viewPosition.y < 0.1f)
-            viewPosition.y = 0.1f;
-        if (viewPosition.y > 0.9f)
-            viewPosition.y = 0.9f;
+        if (viewPosition.x < min)
+            viewPosition.x = min;
+        if (viewPosition.x > max)
+            viewPosition.x = max;
+        if (viewPosition.y < min)
+            viewPosition.y = min;
+        if (viewPosition.y > max)
+            viewPosition.y = max;
         t.transform.position = Camera.main.ViewportToWorldPoint(viewPosition);
     }
 }
