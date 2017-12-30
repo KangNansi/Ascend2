@@ -26,7 +26,7 @@ public class Bullet : MonoBehaviour {
             damageHandler.ReceiveDamage(damage);
         }
         Debug.Log("Destroyed");
-        AutoDestroy.SpawnParticle(particle, transform.position, Quaternion.identity, 0.2f);
+        AutoDestroy.SpawnParticle(particle, transform.position, Quaternion.identity, 0.2f).transform.SetParent(collision.transform);
         PlanDestroy(0.2f);
         if(rigid != null)
         {

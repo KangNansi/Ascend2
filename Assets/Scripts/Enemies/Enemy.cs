@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	
 	// Update is called once per frame
 	protected void Update () {
-		if(life < 0)
+		if(life <= 0)
         {
             OnDie();
         }
@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
     protected virtual void OnDie()
     {
-        AutoDestroy.SpawnParticle(Explosion, transform.position, Quaternion.identity, 1f);
+        AutoDestroy.SpawnParticle(Explosion, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

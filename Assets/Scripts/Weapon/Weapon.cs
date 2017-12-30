@@ -9,7 +9,9 @@ public class Weapon : MonoBehaviour {
     public float bulletSpeed = 1000;
     public Vector3 baseSpeed = new Vector3();
     public bool directionnal = false;
+    public bool position = false;
     Vector3 shootDirection = new Vector3();
+    Vector3 shootPosition = new Vector3();
     public Vector3 Direction
     {
         get
@@ -19,6 +21,13 @@ public class Weapon : MonoBehaviour {
         set
         {
             shootDirection = value;
+        }
+    }
+    public Vector3 ShootPosition
+    {
+        set
+        {
+            shootPosition = value;
         }
     }
 
@@ -65,6 +74,10 @@ public class Weapon : MonoBehaviour {
         if(directionnal)
         {
             direction = shootDirection;
+        }
+        else if(position)
+        {
+            direction = (shootPosition - transform.position).normalized;
         }
         else if(target != null)
         {
