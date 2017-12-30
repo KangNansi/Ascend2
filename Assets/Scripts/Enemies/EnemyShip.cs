@@ -31,9 +31,16 @@ public class EnemyShip : Enemy {
         else
         {
             weapon.Shoot = false;
+        }  
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        SpaceShip ship = other.gameObject.GetComponent<SpaceShip>();
+        if (ship != null)
+        {
+            target = ship;
         }
-
-
     }
 
 

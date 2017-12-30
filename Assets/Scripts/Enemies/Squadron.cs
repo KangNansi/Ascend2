@@ -18,8 +18,6 @@ public class Squadron : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
-
         //Path
         if (running)
         {
@@ -35,7 +33,6 @@ public class Squadron : MonoBehaviour {
         SpaceShip ship = other.gameObject.GetComponent<SpaceShip>();
         if (ship != null)
         {
-            target = ship;
             running = true;
         }
     }
