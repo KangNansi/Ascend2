@@ -10,10 +10,11 @@ public class Enemy : MonoBehaviour, IDamageable {
     public float maxLife = 100;
     float life = 100;
 
-    public void ReceiveDamage(float value)
+    public bool ReceiveDamage(float value)
     {
         life -= value;
         Debug.Log("Damaged");
+        return false;
     }
 
     // Use this for initialization

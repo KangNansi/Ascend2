@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ascend2Git", "Ascend2Git.csproj", "{99241713-3D96-DFB7-2D01-F1E186631F40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ascend2Git.Plugins", "Ascend2Git.Plugins.csproj", "{B117A592-47B1-5DA4-F8A4-EA805CE8BA96}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ascend2Git.Editor", "Ascend2Git.Editor.csproj", "{758B4360-3538-A1E9-98BF-7311E9A87F24}"
 EndProject
 Global
@@ -15,6 +17,10 @@ Global
 		{99241713-3D96-DFB7-2D01-F1E186631F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99241713-3D96-DFB7-2D01-F1E186631F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99241713-3D96-DFB7-2D01-F1E186631F40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B117A592-47B1-5DA4-F8A4-EA805CE8BA96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B117A592-47B1-5DA4-F8A4-EA805CE8BA96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B117A592-47B1-5DA4-F8A4-EA805CE8BA96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B117A592-47B1-5DA4-F8A4-EA805CE8BA96}.Release|Any CPU.Build.0 = Release|Any CPU
 		{758B4360-3538-A1E9-98BF-7311E9A87F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{758B4360-3538-A1E9-98BF-7311E9A87F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{758B4360-3538-A1E9-98BF-7311E9A87F24}.Release|Any CPU.ActiveCfg = Release|Any CPU

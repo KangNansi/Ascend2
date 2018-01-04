@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class SpaceShip : MonoBehaviour, IDamageable {
 
+    public delegate void ShipEvent();
+    public event ShipEvent OnDamage;
+
     public GameObject explosion;
     public float speed = 10;
     public float maxLife = 100;
+    public bool receiveDamage = true;
     ShipController controller;
     public ShipController Controller
     {
@@ -54,8 +58,16 @@ public class SpaceShip : MonoBehaviour, IDamageable {
         life = maxLife;
     }
 
-    public void ReceiveDamage(float value)
+    public bool ReceiveDamage(float value)
     {
+        if(!receiveDamage)
+        {
+            return true;
+        }
+        if(OnDamage != null)
+        {
+            OnDamage();
+        }
         life -= value;
         if(life <= 0)
         {
@@ -63,5 +75,6 @@ public class SpaceShip : MonoBehaviour, IDamageable {
             //Destroy(gameObject);
             gameObject.SetActive(false);
         }
+        return false;
     }
 }

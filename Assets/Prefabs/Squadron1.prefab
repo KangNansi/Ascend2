@@ -932,7 +932,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1609769181080964}
   m_LocalRotation: {x: -0.017982425, y: -0.76739603, z: -0.021543123, w: 0.6405591}
-  m_LocalPosition: {x: 887.2, y: 404.20822, z: 1011.10596}
+  m_LocalPosition: {x: 362.90317, y: 125.01325, z: 224.93457}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4003637065526170}
@@ -2065,7 +2065,7 @@ BoxCollider:
   m_GameObject: {fileID: 1609769181080964}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 500, y: 500, z: 500}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2120,6 +2120,8 @@ MonoBehaviour:
   Explosion: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 2}
   maxLife: 100
   weapon: {fileID: 114730256476663052}
+  localCurve: {fileID: 0}
+  curveSpeed: 10
 --- !u!114 &114697153624187416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2134,6 +2136,8 @@ MonoBehaviour:
   Explosion: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 2}
   maxLife: 100
   weapon: {fileID: 114854843619557100}
+  localCurve: {fileID: 0}
+  curveSpeed: 10
 --- !u!114 &114730256476663052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2148,7 +2152,7 @@ MonoBehaviour:
   bullet: {fileID: 54643929100420850, guid: cb57228c23312f6418b8856dc591a935, type: 2}
   burstParticle: {fileID: 0}
   frequency: 2
-  bulletSpeed: 50
+  bulletSpeed: 100
   baseSpeed: {x: 0, y: 0, z: 0}
   directionnal: 0
   position: 1
@@ -2167,7 +2171,7 @@ MonoBehaviour:
   bullet: {fileID: 54643929100420850, guid: cb57228c23312f6418b8856dc591a935, type: 2}
   burstParticle: {fileID: 0}
   frequency: 2
-  bulletSpeed: 50
+  bulletSpeed: 100
   baseSpeed: {x: 0, y: 0, z: 0}
   directionnal: 0
   position: 1
@@ -2186,7 +2190,7 @@ MonoBehaviour:
   bullet: {fileID: 54643929100420850, guid: cb57228c23312f6418b8856dc591a935, type: 2}
   burstParticle: {fileID: 0}
   frequency: 2
-  bulletSpeed: 50
+  bulletSpeed: 100
   baseSpeed: {x: 0, y: 0, z: 0}
   directionnal: 0
   position: 1
@@ -2205,6 +2209,8 @@ MonoBehaviour:
   Explosion: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 2}
   maxLife: 100
   weapon: {fileID: 114795359089124040}
+  localCurve: {fileID: 0}
+  curveSpeed: 10
 --- !u!135 &135476988339540390
 SphereCollider:
   m_ObjectHideFlags: 1

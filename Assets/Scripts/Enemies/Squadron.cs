@@ -8,8 +8,17 @@ public class Squadron : MonoBehaviour {
 
     public BGCcMath path;
     float distance = 0;
+    public float CurrentDistance
+    {
+        get
+        {
+            return distance;
+        }
+    }
+    float runDistance = 0f;
     public float speed = 10f;
     bool running = false;
+    Vector3 offset;
 
     // Use this for initialization
     void Start () {
@@ -21,10 +30,17 @@ public class Squadron : MonoBehaviour {
         //Path
         if (running)
         {
-            distance += Time.deltaTime * speed;
+            runDistance += Time.deltaTime * speed;
+            distance -= Time.deltaTime * speed;
             Vector3 tangent;
-            transform.position = path.CalcPositionAndTangentByDistance(distance, out tangent);
-            transform.rotation = Quaternion.LookRotation(tangent);
+            Vector3 curvePosition = path.CalcPositionAndTangentByDistance(distance, out tangent);
+            transform.position = curvePosition;
+            transform.rotation = Quaternion.LookRotation(-tangent);
+            transform.position += (transform.forward * offset.z + transform.right * offset.x + transform.up * offset.y);
+            if(runDistance > 300f)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -35,5 +51,16 @@ public class Squadron : MonoBehaviour {
         {
             running = true;
         }
+    }
+
+    public void Launch(BGCcMath curve, float dist = -1f, Vector3 off = new Vector3())
+    {
+        path = curve;
+        if(dist>=0)
+        {
+            distance = dist;
+        }
+        offset = off;
+        running = true;
     }
 }

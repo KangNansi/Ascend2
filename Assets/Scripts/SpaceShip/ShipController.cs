@@ -7,6 +7,17 @@ using BansheeGz.BGSpline.Curve;
 
 public class ShipController : MonoBehaviour {
 
+    public delegate void OnUpdate();
+    public class ShipState
+    {
+        public float time = 0f;
+        public bool receiveDamage = true;
+
+        public OnUpdate update = null;
+    }
+
+    Stack<ShipState> stateMachine = new Stack<ShipState>();
+
     public SpaceShip ship;
     public Transform target;
     public Canvas UICanvas;
@@ -14,12 +25,34 @@ public class ShipController : MonoBehaviour {
     public RectTransform targetUIB;
     public Image lifeBar;
     public BGCcMath path;
+    new public CameraController camera;
     float distance = 0;
+    public float CurrentDistance
+    {
+        get
+        {
+            return distance;
+        }
+    }
+    public float CurrentDistanceRatio
+    {
+        get
+        {
+            return distance/path.GetDistance();
+        }
+    }
+
+    public Text DistanceUI;
+
     public float sensibility;
     public float travelingSpeed = 2.0f;
     public float targetForwardValue = 7f;
     public float targetDistance = 4f;
     public float targetBDistance = 2f;
+
+    public float rollDirection = 1f;
+    public float rollCooldown = 2f;
+    float rollCooldownBuffer = 2f;
 
     //Locking
     public Missile missile;
@@ -28,22 +61,33 @@ public class ShipController : MonoBehaviour {
     List<Enemy> targets = new List<Enemy>();
     List<Image> targetsUI = new List<Image>();
 
+    float shipPosition;
     Vector3 tangent;
     public Vector3 Tangent
     {
         get { return tangent; }
     }
 
+    float h;
+    float v;
+
     // Use this for initialization
     void Start () {
         ship.Controller = this;
+        shipPosition = ship.transform.localPosition.z;
         path.Fields = BGCurveBaseMath.Fields.PositionAndTangent;
+
+        ShipState normal = new ShipState();
+        normal.update = OnUpdateNormal;
+        stateMachine.Push(normal);
+
+        ship.OnDamage += () => camera.Shake(2f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
 
         float hr = Input.GetAxis("HorizontalR");
         float vr = Input.GetAxis("VerticalR");
@@ -54,21 +98,25 @@ public class ShipController : MonoBehaviour {
         MoveTarget(new Vector3(h, v, 0) * sensibility);
 
         //ship.transform.rotation = Quaternion.LookRotation((target.position - ship.transform.position).normalized, Vector3.up);
-        ship.transform.localRotation = Quaternion.AngleAxis(h * -45, Vector3.forward) 
-            * Quaternion.AngleAxis(v * -25, Vector3.right);
+        ship.transform.localPosition = new Vector3(ship.transform.localPosition.x, ship.transform.localPosition.y, shipPosition);
+        ship.receiveDamage = stateMachine.Peek().receiveDamage;
+        if (stateMachine.Peek().update != null)
+        {
+            stateMachine.Peek().update();
+        }
         ship.weapon.target = target;
-        //ship.weapon.baseSpeed = transform.forward * travelingSpeed;
-        //ship.weaponB.baseSpeed = transform.forward * travelingSpeed;
+        ship.weapon.baseSpeed = transform.forward * travelingSpeed;
+        ship.weaponB.baseSpeed = transform.forward * travelingSpeed;
         ship.weapon.Direction = (target.position - ship.transform.position).normalized;
         ship.weaponB.Direction = ship.weapon.Direction;
 
-        ship.Shooting = Input.GetAxis("Fire1")>0.1f;
+        
 
         //transform.position += transform.forward * Time.deltaTime * travelingSpeed;
+        
 
 
-       
-
+        DistanceUI.text = "Distance: " + distance;
         transform.position = path.CalcPositionAndTangentByDistance(distance, out tangent);
         //Debug.Log(tangent);
         transform.rotation = Quaternion.LookRotation(tangent);
@@ -93,6 +141,36 @@ public class ShipController : MonoBehaviour {
             lifeBar.fillAmount = (ship.Life / ship.maxLife);
         }
 	}
+
+    void OnUpdateNormal()
+    {
+        rollCooldownBuffer += Time.deltaTime;
+        ship.Shooting = Input.GetAxis("Fire1") > 0.1f;
+        ship.transform.localRotation = Quaternion.AngleAxis(h * -45, Vector3.forward)
+            * Quaternion.AngleAxis(v * -25, Vector3.right);
+
+        if (Input.GetButtonDown("Dash") && rollCooldownBuffer > rollCooldown)
+        {
+            rollDirection = (h < 0) ? -1 : 1;
+            ship.Shooting = false;
+            ShipState roll = new ShipState();
+            roll.update = OnUpdateRoll;
+            roll.receiveDamage = false;
+            stateMachine.Push(roll);
+        }
+    }
+
+    void OnUpdateRoll()
+    {
+        stateMachine.Peek().time += Time.deltaTime;
+        ship.transform.localRotation = Quaternion.AngleAxis(rollDirection * - 1400 * stateMachine.Peek().time, Vector3.forward)
+            * Quaternion.AngleAxis(v * -25, Vector3.right);
+        if(stateMachine.Peek().time > 1f)
+        { 
+            rollCooldownBuffer = 0;
+            stateMachine.Pop();
+        }
+    }
 
     bool IsOutOfScreen(GameObject g)
     {

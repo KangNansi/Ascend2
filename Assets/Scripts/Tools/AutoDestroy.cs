@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AutoDestroy : MonoBehaviour {
 
+
     public float duration = 1f;
     float time = 0;
 
@@ -41,4 +42,5 @@ public class AutoDestroy : MonoBehaviour {
         autod.duration = duration;
         return p;
     }
+
 }

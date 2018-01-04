@@ -67,7 +67,7 @@ public class Weapon : MonoBehaviour {
 
     void ShootBullet()
     {
-        Rigidbody rigid = AutoDestroy.SpawnObject(bullet.gameObject, transform.position, Quaternion.identity, 20f).GetComponent<Rigidbody>();
+        Rigidbody rigid = AutoDestroy.SpawnObject(bullet.gameObject, transform.position, Quaternion.identity, 5f).GetComponent<Rigidbody>();
         //Rigidbody rigid = (Rigidbody)Instantiate(bullet, transform.position, Quaternion.identity);
         //gameobject.transform.SetParent(transform);
         Vector3 direction = transform.forward;
